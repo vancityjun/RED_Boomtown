@@ -1,4 +1,7 @@
 function tagsQueryString(tags, itemid, result) {
+  // console.log("tags: " + tags);
+  // console.log("itemid: " + itemid);
+  // console.log("result: " + result);
   for (i = tags.length; i > 0; i--) {
     result += `($${i}, ${itemid}),`;
   }
@@ -9,7 +12,7 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: `INSERT into public.users (username, email, password) values ('${fullname}', '${email}', '${password}')`, // @TODO: Authentication - Server
+        text: `INSERT into users (fullname, email, password) values ($1, $2, $3)`, // @TODO: Authentication - Server
         values: [fullname, email, password]
       };
       try {
@@ -28,7 +31,7 @@ module.exports = postgres => {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: `select * from puclic.users where email = '${email}'`, // @TODO: Authentication - Server
+        text: `select * from puclic.users where email = $1`, // @TODO: Authentication - Server
         values: [email]
       };
       try {
@@ -155,7 +158,6 @@ module.exports = postgres => {
        *
        *  Read the method and the comments carefully before you begin.
        */
-
       return new Promise((resolve, reject) => {
         /**
          * Begin transaction by opening a long-lived connection
@@ -168,15 +170,8 @@ module.exports = postgres => {
             client.query("BEGIN", async err => {
               const { title, description, tags } = item;
 
-              // Generate new Item query
-              // @TODO
-              // -------------------------------
-
-              // Insert new Item
-              // @TODO
-              const insertItem = `INSERT into public.items (title, description, "imageUrl") values ('yellow glasses', 'yg', 'imageofyellowglasses')`;
-              await client.query(insertItem);
-              // -------------------------------
+              const insertItem = `INSERT into items (title, description, "imageUrl") values ('${title}', '${description}', '' )`;
+              const newItem = await client.query(insertItem);
 
               // Generate tag relationships query (use the'tagsQueryString' helper function provided)
               // @TODO
@@ -184,8 +179,15 @@ module.exports = postgres => {
 
               // Insert tags
               // @TODO
-              const insertTags = `INSERT into public.tags () values ()`;
-              await client.query(insertTags);
+              console.log(newItem);
+              const tagRelationship = `INSERT into itemtags ("tagId", "itemId") values ${tagsQueryString(
+                tags,
+                newItem.id,
+                ""
+              )}`;
+              // console.log(tagRelationship);
+              await postgres.query(tagRelationship);
+              console.log("tagrelationship inserted");
               // -------------------------------
 
               // Commit the entire transaction!

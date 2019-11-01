@@ -19,7 +19,8 @@ function setCookie({ tokenName, token, res }) {
   // Refactor this method with the correct configuration values.
   res.cookie(tokenName, token, {
     // @TODO: Supply the correct configuration values for our cookie here
-    expires: new Date(Date.now() + 2 * 3600000),
+    // expires: new Date(Date.now() + 2 * 3600000),
+    maxAge: 900000,
     secure: true
   });
   // -------------------------------
@@ -56,6 +57,7 @@ const mutationResolvers = app => ({
     },
     { pgResource, req }
   ) {
+    // console.log(fullname);
     try {
       /**
        * @TODO: Authentication - Server
@@ -68,12 +70,12 @@ const mutationResolvers = app => ({
        * and store that instead. The password can be decoded using the original password.
        */
       // @TODO: Use bcrypt to generate a cryptographic hash to conceal the user's password before storing it.
-      const hashedPassword = "";
+      const hashedPassword = await bcrypt.hash(password, 12);
       // -------------------------------
 
-      const user = await context.pgResource.createUser({
-        fullname: args.user.fullname,
-        email: args.user.email,
+      const user = await pgResource.createUser({
+        fullname: fullname,
+        email: email,
         password: hashedPassword
       });
 
@@ -102,19 +104,11 @@ const mutationResolvers = app => ({
     { pgResource, req }
   ) {
     try {
-      const user = await context.pgResource.getUserAndPasswordForVerification(
-        args.user.email
-      );
+      const user = await pgResource.getUserAndPasswordForVerification(email);
       if (!user) throw "User was not found.";
-      /**
-       *  @TODO: Authentication - Server
-       *
-       *  To verify the user has provided the correct password, we'll use the provided password
-       *  they submitted from the login form to decrypt the 'hashed' version stored in out database.
-       */
-      // Use bcrypt to compare the provided password to 'hashed' password stored in your database.
-      const valid = false;
-      // -------------------------------
+
+      const valid = await bcrypt.compare(password, user.password);
+
       if (!valid) throw "Invalid Password";
 
       const token = generateToken(user, app.get("JWT_SECRET"));
@@ -151,7 +145,9 @@ const mutationResolvers = app => ({
      *  Again, you may look at the user resolver for an example of what
      *  destructuring should look like.
      */
+    // console.log(context);
     const user = await jwt.decode(context.token, app.get("JWT_SECRET"));
+    // console.log(user);
     const newItem = await context.pgResource.saveNewItem({
       item: args.item,
       user
