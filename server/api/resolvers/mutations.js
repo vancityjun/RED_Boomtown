@@ -27,6 +27,7 @@ function setCookie({ tokenName, token, res }) {
 }
 
 function generateToken(user, secret) {
+  // console.log(user);
   const { id, email, fullname, bio } = user; // Omit the password from the token
   /**
    *  @TODO: Authentication - Server
@@ -57,7 +58,6 @@ const mutationResolvers = app => ({
     },
     { pgResource, req }
   ) {
-    // console.log(fullname);
     try {
       /**
        * @TODO: Authentication - Server
@@ -80,7 +80,6 @@ const mutationResolvers = app => ({
       });
 
       const token = generateToken(user, app.get("JWT_SECRET"));
-
       setCookie({
         tokenName: app.get("JWT_COOKIE_NAME"),
         token,
@@ -88,7 +87,7 @@ const mutationResolvers = app => ({
       });
 
       return {
-        toekn,
+        token,
         user
       };
     } catch (e) {
@@ -105,6 +104,7 @@ const mutationResolvers = app => ({
   ) {
     try {
       const user = await pgResource.getUserAndPasswordForVerification(email);
+      console.log(user);
       if (!user) throw "User was not found.";
 
       const valid = await bcrypt.compare(password, user.password);

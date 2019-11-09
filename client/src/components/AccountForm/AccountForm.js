@@ -1,26 +1,24 @@
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import React, { Component } from 'react';
-import Typography from '@material-ui/core/Typography';
-/**
- * @TODO: Uncomment the following lines when authentication is added to the form
- *
- * import { Form, Field } from 'react-final-form'
- *
- * import {
- *    LOGIN_MUTATION,
- *    SIGNUP_MUTATION,
- *    VIEWER_QUERY
- * } from '../../apollo/queries';
- * import { graphql, compose } from 'react-apollo';
- * import validate from './helpers/validation'
- */
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import React, { Component } from "react";
+import Typography from "@material-ui/core/Typography";
 
-import styles from './styles';
+// @TODO: Uncomment the following lines when authentication is added to the form
+// import { Form, Field } from "react-final-form";
+
+// import {
+//   LOGIN_MUTATION,
+//   SIGNUP_MUTATION,
+//   VIEWER_QUERY
+// } from "../../apollo/queries";
+// import { graphql, compose } from "react-apollo";
+// import validate from "./helpers/validation";
+
+import styles from "./styles";
 
 class AccountForm extends Component {
   constructor(props) {
@@ -37,7 +35,7 @@ class AccountForm extends Component {
       // @TODO: Wrap in Final Form <Form />
       <form
         onSubmit={() => {
-          console.log('Submitted');
+          console.log("Submitted");
         }}
         className={classes.accountForm}
       >
@@ -49,9 +47,9 @@ class AccountForm extends Component {
               id="fullname"
               type="text"
               inputProps={{
-                autoComplete: 'off'
+                autoComplete: "off"
               }}
-              value={''}
+              value={""}
             />
             {/* @TODO: Close Final Form <Field /> */}
           </FormControl>
@@ -63,9 +61,9 @@ class AccountForm extends Component {
             id="email"
             type="text"
             inputProps={{
-              autoComplete: 'off'
+              autoComplete: "off"
             }}
-            value={''}
+            value={""}
           />
           {/* @TODO: Close Final Form <Field /> */}
         </FormControl>
@@ -76,9 +74,9 @@ class AccountForm extends Component {
             id="password"
             type="password"
             inputProps={{
-              autoComplete: 'off'
+              autoComplete: "off"
             }}
-            value={''}
+            value={""}
           />
           {/* @TODO: Close Final Form <Field /> */}
         </FormControl>
@@ -99,7 +97,7 @@ class AccountForm extends Component {
                 false // @TODO: This prop should depend on pristine or valid state of form
               }
             >
-              {this.state.formToggle ? 'Enter' : 'Create Account'}
+              {this.state.formToggle ? "Enter" : "Create Account"}
             </Button>
             <Typography>
               <button
@@ -113,8 +111,8 @@ class AccountForm extends Component {
                 }}
               >
                 {this.state.formToggle
-                  ? 'Create an account.'
-                  : 'Login to existing account.'}
+                  ? "Create an account."
+                  : "Login to existing account."}
               </button>
             </Typography>
           </Grid>

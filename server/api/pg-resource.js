@@ -1,7 +1,4 @@
 function tagsQueryString(tags, itemid, result) {
-  // console.log("tags: " + tags);
-  // console.log("itemid: " + itemid);
-  // console.log("result: " + result);
   for (i = tags.length; i > 0; i--) {
     result += `($${i}, ${itemid}),`;
   }
@@ -12,7 +9,7 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: `INSERT into users (fullname, email, password) values ($1, $2, $3)`, // @TODO: Authentication - Server
+        text: `INSERT into users (fullname, email, password) values ($1, $2, $3) RETURNING *`, // @TODO: Authentication - Server
         values: [fullname, email, password]
       };
       try {
@@ -31,11 +28,12 @@ module.exports = postgres => {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: `select * from puclic.users where email = $1`, // @TODO: Authentication - Server
+        text: `select * from users where email = $1`, // @TODO: Authentication - Server
         values: [email]
       };
       try {
         const user = await postgres.query(findUserQuery);
+        // console.log(user);
         if (!user) throw "User was not found.";
         return user.rows[0];
       } catch (e) {
@@ -67,10 +65,10 @@ module.exports = postgres => {
         text: "SELECT id, fullname, email, bio from users where id = $1", // @TODO: Basic queries
         values: [id]
       };
-      // const passwordQurey = {
-      //   text: `select password from public.users where password = '${password}'`,
-      //   values: [password]
-      // };
+      const passwordQurey = {
+        text: `select password from public.users where password = $1`,
+        values: [password]
+      };
       /**
        *  Refactor the following code using the error handling logic described above.
        *  When you're done here, ensure all of the resource methods in this file
@@ -83,9 +81,9 @@ module.exports = postgres => {
       try {
         const user = await postgres.query(findUserQuery);
         // console.log(user);
-        //const password = await postgres.query(passwordQurey);
+        const password = await postgres.query(passwordQurey);
         if (!user) throw "User was not found.";
-        // else if (!password) throw "User or Password incorrect";
+        else if (!password) throw "User or Password incorrect";
         return user.rows[0];
       } catch (e) {
         throw "User was not found.";
@@ -170,7 +168,7 @@ module.exports = postgres => {
             client.query("BEGIN", async err => {
               const { title, description, tags } = item;
 
-              const insertItem = `INSERT into items (title, description, "imageUrl") values ('${title}', '${description}', '' )`;
+              const insertItem = `INSERT into items (title, description, "imageUrl") values ('${title}', '${description}', '' ) returning *`;
               const newItem = await client.query(insertItem);
 
               // Generate tag relationships query (use the'tagsQueryString' helper function provided)
@@ -179,7 +177,7 @@ module.exports = postgres => {
 
               // Insert tags
               // @TODO
-              console.log(newItem);
+              // console.log(newItem);
               const tagRelationship = `INSERT into itemtags ("tagId", "itemId") values ${tagsQueryString(
                 tags,
                 newItem.id,

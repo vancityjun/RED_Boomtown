@@ -63,12 +63,10 @@ module.exports = gql`
     viewer: User
     items(filter: ID): [Item]
     tags: [Tag]
-    login(email: String!, password: String!): AuthData!
   }
-  type AuthData {
-    userId: ID!
-    token: String!
-    tokenExpiration: Int!
+  type AuthPayload {
+    user: User
+    token: String
   }
   input UserInput {
     email: String!
@@ -77,8 +75,8 @@ module.exports = gql`
   }
   type Mutation {
     addItem(item: NewItemInput!): Item
-    signup(user: UserInput): User
-    login(email: String!, password: String!): User
+    signup(user: UserInput): AuthPayload
+    login(email: String!, password: String!): AuthPayload
     logout(id: ID!): User
   }
 `;

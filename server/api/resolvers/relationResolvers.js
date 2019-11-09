@@ -35,17 +35,18 @@ const relationResolvers = {
      *
      */
     // @TODO: Uncomment these lines after you define the Item type with these fields
-    // async itemowner(parent, arg, {pgResource}) {
-    //   // @TODO: Replace this mock return statement with the correct user from Postgres
-    //   const itemowner = await pgResource.
-    //   return {
-    //     id: 29,
-    //     fullname: "Mock user",
-    //     email: "mock@user.com",
-    //     bio: "Mock user. Remove me."
-    //   }
-    //   // -------------------------------
-    // },
+    async itemowner(parent, arg, { pgResource }) {
+      // @TODO: Replace this mock return statement with the correct user from Postgres
+      const itemowner = await pgResource.getItemsForUser(parent.id);
+      const { id, fullname, email, bio } = itemowner;
+      return {
+        id: id,
+        fullname: fullname,
+        email: email,
+        bio: bio
+      };
+      // -------------------------------
+    },
     async tags(parent, arg, { pgResource }) {
       // @TODO: Replace this mock return statement with the correct tags for the queried Item from Postgres
       const tag = await pgResource.getTagsForItem();
