@@ -20,7 +20,6 @@ module.exports = ({ app, pgResource }) => {
       const tokenName = app.get("JWT_COOKIE_NAME");
       const token = req ? req.cookies[tokenName] : undefined;
       let user = null;
-      // if (process.env.NODE_ENV === "development") token = req.headers.token;
       try {
         if (token) {
           user = jwt.verify(token, app.get("JWT_SECRET"));

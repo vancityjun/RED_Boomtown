@@ -1,54 +1,23 @@
 const { ApolloError } = require("apollo-server-express");
 const { AuthenticationError } = require("apollo-server-express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 function setCookie({ tokenName, token, res }) {
-  /**
-   *  @TODO: Authentication - Server
-   *
-   *  This helper function is responsible for attaching a cookie to the HTTP
-   *  response. 'apollo-server-express' handles returning the response to the client.
-   *  We added the 'req' object to the resolver context so we can use it to atttach the cookie.
-   *  The 'req' object comes from express.
-   *
-   *  A secure cookie that can be used to store a user's session data has the following properties:
-   *  1) It can't be accessed from JavaScript
-   *  2) It will only be sent via https (but we'll have to disable this in development using NODE_ENV)
-   *  3) A boomtown cookie should oly be valid for 2 hours.
-   */
-  // Refactor this method with the correct configuration values.
   res.cookie(tokenName, token, {
-    // @TODO: Supply the correct configuration values for our cookie here
-    // expires: new Date(Date.now() + 2 * 3600000),
-    maxAge: 900000,
-    secure: true
+    maxAge: 2 * 60 * 60 * 1000,
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true
   });
-  // -------------------------------
 }
 
 function generateToken(user, secret) {
-  // console.log(user);
-  const { id, email, fullname, bio } = user; // Omit the password from the token
-  /**
-   *  @TODO: Authentication - Server
-   *
-   *  This helper function is responsible for generating the JWT token.
-   *  Here, we'll be taking a JSON object representing the user (the 'J' in JWT)
-   *  and cryptographically 'signing' it using our app's 'secret'.
-   *  The result is a cryptographic hash representing out JSON user
-   *  which can be decoded using the app secret to retrieve the stateless session.
-   */
-  // Refactor this return statement to return the cryptographic hash (the Token)
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync("B4c0//", salt);
-  return hash;
-  // -------------------------------
-}
+  const { id, email, fullname } = user;
 
-// @TODO: Uncomment these lines later when we add auth
-const jwt = require("jsonwebtoken");
-// const authMutations = require("./auth");
-// -------------------------------
+  return jwt.sign({ id, email, fullname }, secret, {
+    expiresIn: "2h"
+  });
+}
 
 const mutationResolvers = app => ({
   async signup(
@@ -59,19 +28,7 @@ const mutationResolvers = app => ({
     { pgResource, req }
   ) {
     try {
-      /**
-       * @TODO: Authentication - Server
-       *
-       * Storing passwords in your project's database requires some basic security
-       * precautions. If someone gains access to your database, and passwords
-       * are stored in 'clear-text' your users accounts immediately compromised.
-       *
-       * The solution is to create a cryptographic hash of the password provided,
-       * and store that instead. The password can be decoded using the original password.
-       */
-      // @TODO: Use bcrypt to generate a cryptographic hash to conceal the user's password before storing it.
       const hashedPassword = await bcrypt.hash(password, 12);
-      // -------------------------------
 
       const user = await pgResource.createUser({
         fullname: fullname,
@@ -100,11 +57,11 @@ const mutationResolvers = app => ({
     {
       user: { email, password }
     },
-    { pgResource, req }
+    { pgResource, req },
+    context
   ) {
     try {
       const user = await pgResource.getUserAndPasswordForVerification(email);
-      console.log(user);
       if (!user) throw "User was not found.";
 
       const valid = await bcrypt.compare(password, user.password);
@@ -133,21 +90,8 @@ const mutationResolvers = app => ({
     return true;
   },
   async addItem(parent, args, context, info) {
-    /**
-     *  @TODO: Destructuring
-     *
-     *  The 'args' and 'context' parameters of this resolver can be destructured
-     *  to make things more readable and avoid duplication.
-     *
-     *  When you're finished with this resolver, destructure all necessary
-     *  parameters in all of your resolver functions.
-     *
-     *  Again, you may look at the user resolver for an example of what
-     *  destructuring should look like.
-     */
-    // console.log(context);
-    const user = await jwt.decode(context.token, app.get("JWT_SECRET"));
-    // console.log(user);
+    //const user = await jwt.verify(context.token, app.get("JWT_SECRET"));
+    const user = { id: 23 };
     const newItem = await context.pgResource.saveNewItem({
       item: args.item,
       user
