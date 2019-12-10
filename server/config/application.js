@@ -12,7 +12,7 @@ module.exports = app => {
   app.set("PG_PASSWORD", process.env.PG_PASSWORD || "0615");
   app.set("PG_DB", process.env.PG_DB || "boomtown");
   app.set("JWT_SECRET", "0615");
-  app.set("JWT_COOKIE_NAME", "BT");
+  app.set("JWT_COOKIE_NAME", "LoginCookie");
 
   app.use(cookieParser());
 

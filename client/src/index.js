@@ -7,7 +7,7 @@ import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 // import { Provider as ReduxProvider } from 'react-redux'
 // -------------------------------
-
+import ItemPreviewProvider from "./context/ItemPreviewProvider";
 import registerServiceWorker from "./registerServiceWorker";
 import theme from "./theme";
 import client from "./apollo";
@@ -27,23 +27,22 @@ import AppRoutes from "./routes";
 
 import { ViewerProvider } from "./context/ViewerProvider";
 
-// @TODO: Remove this import once you have your router working below
-import Home from "./pages/Home";
-
-import "./index.css";
+import "./index.scss";
 
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <ViewerProvider>
-          <MuiThemeProvider theme={theme}>
-            <AppRoutes>
-              <CssBaseline />
-            </AppRoutes>
-          </MuiThemeProvider>
-        </ViewerProvider>
-      </BrowserRouter>
+      <ItemPreviewProvider>
+        <BrowserRouter>
+          <ViewerProvider>
+            <MuiThemeProvider theme={theme}>
+              <AppRoutes>
+                <CssBaseline />
+              </AppRoutes>
+            </MuiThemeProvider>
+          </ViewerProvider>
+        </BrowserRouter>
+      </ItemPreviewProvider>
     </ApolloProvider>
   );
 };

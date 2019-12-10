@@ -22,9 +22,7 @@ function generateToken(user, secret) {
 const mutationResolvers = app => ({
   async signup(
     parent,
-    {
-      user: { fullname, email, password }
-    },
+    { user: { fullname, email, password } },
     { pgResource, req }
   ) {
     try {
@@ -54,9 +52,7 @@ const mutationResolvers = app => ({
 
   async login(
     parent,
-    {
-      user: { email, password }
-    },
+    { user: { email, password } },
     { pgResource, req },
     context
   ) {
@@ -68,6 +64,8 @@ const mutationResolvers = app => ({
 
       if (!valid) throw "Invalid Password";
 
+      // const { fullname, bio, email } = user;
+      // console.log(email);
       const token = generateToken(user, app.get("JWT_SECRET"));
 
       setCookie({
@@ -75,7 +73,7 @@ const mutationResolvers = app => ({
         token,
         res: req.res
       });
-
+      // console.log("login", user);
       return {
         token,
         user
@@ -90,8 +88,7 @@ const mutationResolvers = app => ({
     return true;
   },
   async addItem(parent, args, context, info) {
-    //const user = await jwt.verify(context.token, app.get("JWT_SECRET"));
-    const user = { id: 23 };
+    const user = await jwt.verify(context.token, app.get("JWT_SECRET"));
     const newItem = await context.pgResource.saveNewItem({
       item: args.item,
       user

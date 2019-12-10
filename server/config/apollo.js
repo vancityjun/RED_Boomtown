@@ -1,5 +1,6 @@
 const { ApolloServer } = require("apollo-server-express");
 const { makeExecutableSchema } = require("graphql-tools");
+const jwt = require("jsonwebtoken");
 
 const typeDefs = require("../api/schema");
 let resolvers = require("../api/resolvers");
@@ -23,6 +24,7 @@ module.exports = ({ app, pgResource }) => {
       try {
         if (token) {
           user = jwt.verify(token, app.get("JWT_SECRET"));
+          // console.log("user", user);
         }
         return {
           pgResource,
@@ -31,6 +33,7 @@ module.exports = ({ app, pgResource }) => {
           token
         };
       } catch (e) {
+        console.log(e);
         throw error;
       }
     },

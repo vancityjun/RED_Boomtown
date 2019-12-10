@@ -3,7 +3,7 @@ const { ApolloError } = require("apollo-server");
 const relationResolvers = {
   User: {
     async items(parent, arg, { pgResource }) {
-      const item = await pgResource.getItems(parent.id);
+      const item = await pgResource.getItemsForUser(parent.id);
       return item;
     },
     async borrowed(parent, arg, { pgResource }) {

@@ -64,14 +64,14 @@ module.exports = postgres => {
     },
     async getItemsForUser(id) {
       const items = await postgres.query({
-        text: `SELECT * from items join users on items."ownerId" = users.id where users.id = $1`,
+        text: `SELECT items.* from items join users on items."ownerId" = users.id where users.id = $1`,
         values: [id]
       });
       return items.rows;
     },
     async getBorrowedItemsForUser(id) {
       const items = await postgres.query({
-        text: `SELECT * from items join users on items."borrowerId" = users.id where users.id = $1`,
+        text: `SELECT items.* from items join users on items."borrowerId" = users.id where users.id = $1`,
         values: [id]
       });
       return items.rows[0];
@@ -82,7 +82,7 @@ module.exports = postgres => {
     },
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: `select tags.title from tags inner join itemtags on tags.id = itemtags."tagId" inner join items on itemtags."itemId" = items.id where items.id = $1`, // @TODO: Advanced query Hint: use INNER JOIN
+        text: `select tags.title from tags inner join itemtags on tags.id = itemtags."tagId" inner join items on itemtags."itemId" = items.id where items.id = $1`,
         values: [id]
       };
 
