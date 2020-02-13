@@ -35,5 +35,6 @@ module.exports = app => {
     // Allow requests from dev server address
     app.use(cors(corsConfig));
   }
+  console.log("node env", process.env.NODE_ENV);
   return PORT;
 };
