@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 - npm or yarn
 
-### Enviroonment setting
+### Environment setting
 
 Before you run it, please check if your pc has set NODE_ENV value. If not, click the link below to set an environment.
 
