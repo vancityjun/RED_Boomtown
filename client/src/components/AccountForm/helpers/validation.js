@@ -9,5 +9,6 @@ export default function validate(values) {
   if (values.fullname && !values.fullname) {
     errors.password = "Required";
   }
+  console.log(errors);
   return errors;
 }

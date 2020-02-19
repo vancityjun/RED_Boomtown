@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ItemPreviewContext } from "../../context/ItemPreviewProvider";
 import { TagsContext } from "../../pages/Share/ShareContainer";
-
+import "./Style.scss";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -11,13 +11,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import Chip from "@material-ui/core/Chip";
+import Typography from "@material-ui/core/Typography";
 
 const ShareForm = () => {
   const itemPreviewContext = useContext(ItemPreviewContext);
   const tagsContext = useContext(TagsContext);
   const { updatePreview, insertItem } = itemPreviewContext;
   const { tags } = itemPreviewContext.state.item;
-  // console.log(tagsContext);
   const flexColumn = {
     display: "flex",
     flexDirection: "column",
@@ -26,7 +26,7 @@ const ShareForm = () => {
   };
   return (
     <form method="post" onSubmit={insertItem} style={flexColumn}>
-      <h3>Share. Borrow. Prosper.</h3>
+      <Typography variant="h3">Share. Borrow. Prosper.</Typography>
       <input
         name="imgUrl"
         accept="image/*"
@@ -40,16 +40,20 @@ const ShareForm = () => {
           Select an Image
         </Button>
       </label>
-      <Input placeholder="Placeholder" name="title" onChange={updatePreview} />
       <Input
-        placeholder="Placeholder"
+        placeholder="Name your item"
+        name="title"
+        onChange={updatePreview}
+      />
+      <Input
+        placeholder="Describe your item"
         multiline
         rows="4"
         name="description"
         onChange={updatePreview}
       />
       <FormControl>
-        <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
+        <InputLabel id="demo-mutiple-checkbox-label">Add some tags</InputLabel>
         <Select
           labelId="demo-mutiple-checkbox-label"
           id="demo-mutiple-checkbox"

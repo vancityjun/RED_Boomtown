@@ -9,11 +9,14 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
+import "./Header.scss";
 import { Link } from "react-router-dom";
-import { LOGOUT_MUTATION } from "../../apollo/queries";
+import { LOGOUT_MUTATION, VIEWER_QUERY } from "../../apollo/queries";
 import { ViewerContext } from "../../context/ViewerProvider";
-import { graphql } from "react-apollo";
+import { Mutation } from "react-apollo";
+import client from "../../apollo";
 
 const Header = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,7 +32,7 @@ const Header = props => {
   };
   return (
     <AppBar position="static">
-      <Toolbar>
+      <Toolbar className="toolBar">
         <Link to="/">
           <img
             src={require("../../images/boomtown.svg")}
@@ -37,56 +40,64 @@ const Header = props => {
             style={{ width: 40 }}
           />
         </Link>
-        <Link to="/share">
-          <Button>
-            <AddCircleIcon />
-            SHARE SOMETHING
-          </Button>
-        </Link>
-        <IconButton
-          aria-label="more"
-          aria-controls="long-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-          <MoreVertIcon />
-        </IconButton>
-
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              width: 200
-            }
-          }}
-        >
-          <Link to="/profile">
-            <MenuItem>
-              <FingerprintIcon />
-              your profile
-            </MenuItem>
+        <div>
+          <Link to="/share">
+            <Button>
+              <AddCircleIcon />
+              SHARE SOMETHING
+            </Button>
           </Link>
-          <MenuItem
-            onClick={() =>
-              props.logout({
-                variables: { id: viewerContext.id }
-              })
-            }
+          <IconButton
+            aria-label="more"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
           >
-            <PowerSettingsNewIcon />
-            log out
-          </MenuItem>
-        </Menu>
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                width: 200
+              }
+            }}
+          >
+            <Link onClick={handleClose} to="/profile">
+              <MenuItem>
+                <FingerprintIcon />
+                your profile
+              </MenuItem>
+            </Link>
+            <Mutation
+              mutation={LOGOUT_MUTATION}
+              onCompleted={() => {
+                client.resetStore();
+              }}
+            >
+              {(logoutMutation, { data }) => {
+                return (
+                  <MenuItem
+                    onClick={() => {
+                      console.log("logout");
+                      logoutMutation();
+                    }}
+                  >
+                    <PowerSettingsNewIcon />
+                    log out
+                  </MenuItem>
+                );
+              }}
+            </Mutation>
+          </Menu>
+        </div>
       </Toolbar>
     </AppBar>
   );
 };
 
-export default graphql(LOGOUT_MUTATION, {
-  // options: { refetchQueries: [] },
-  name: "logout"
-})(Header);
+export default Header;

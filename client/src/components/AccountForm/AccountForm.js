@@ -18,12 +18,14 @@ import { graphql, compose } from "react-apollo";
 import validate from "./helpers/validation";
 
 import styles from "./styles";
+import { SchemaMetaFieldDef } from "graphql";
 
 class AccountForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formToggle: true
+      formToggle: true,
+      errorMessage: null
     };
   }
   render() {
@@ -33,7 +35,9 @@ class AccountForm extends Component {
       this.state.formToggle
         ? login({
             variables: { user: values }
-          })
+          }).catch(error =>
+            this.setState({ errorMessage: error.graphQLErrors[0].message })
+          )
         : signup({
             variables: { user: values }
           });
@@ -41,23 +45,26 @@ class AccountForm extends Component {
     return (
       <Form
         onSubmit={onSubmit}
-        validate={validate}
-        render={({ handleSubmit }) => (
+        validate={values => validate(values)}
+        render={({ handleSubmit, values }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
                 <InputLabel htmlFor="fullname">Username</InputLabel>
                 <Field name="fullname" component="input" type="text">
-                  {props => (
-                    <Input
-                      id="fullname"
-                      type="text"
-                      inputProps={{
-                        autoComplete: "off"
-                      }}
-                      value={props.input.value}
-                      onChange={props.input.onChange}
-                    />
+                  {({ input, meta }) => (
+                    <>
+                      <Input
+                        id="fullname"
+                        type="text"
+                        inputProps={{
+                          autoComplete: "off"
+                        }}
+                        value={input.value}
+                        onChange={input.onChange}
+                      />
+                      <span>{meta.error}</span>
+                    </>
                   )}
                 </Field>
               </FormControl>
@@ -130,7 +137,7 @@ class AccountForm extends Component {
               </Grid>
             </FormControl>
             <Typography className={classes.errorMessage}>
-              {/* @TODO: Display sign-up and login errors */}
+              {this.state.errorMessage}
             </Typography>
           </form>
         )}

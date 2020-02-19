@@ -10,7 +10,6 @@ const ViewerProvider = ({ children }) => {
       {({ data, loading, error }) => {
         if (loading) return "Loading...";
         if (error) return `Error! ${error.message}`;
-        console.log(data.viewer);
         return (
           <ViewerContext.Provider value={data.viewer}>
             {children}

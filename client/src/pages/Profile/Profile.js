@@ -3,10 +3,11 @@ import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import UserInfo from "../../components/UserInfo/UserInfo";
 import ShareItemPreview from "../../components/ShareItemPreview";
+import Typography from "@material-ui/core/Typography";
 
-const Profile = (props, { classes }) => {
-  const user = Object.values(props.data);
-  const itemList = props.items.map((item, i) => {
+const Profile = ({ items, data }) => {
+  const user = Object.values(data);
+  const itemList = items.map((item, i) => {
     const info = Object.values(item);
     const tag = Object.values(info[5][0]);
     const itemOwner = Object.values(info[6]);
@@ -18,12 +19,20 @@ const Profile = (props, { classes }) => {
         tags={tag}
         key={i}
         userName={itemOwner[1]}
+        // userId={}
       />
     );
   });
   return (
     <div>
-      <UserInfo userName={user[1]} />
+      <UserInfo user={user} />
+      <Typography
+        variant="h4"
+        component="h4"
+        style={{ color: "#f9a825", marginBottom: 10 }}
+      >
+        Shared Items
+      </Typography>
       {itemList}
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { ItemPreviewContext } from "../../context/ItemPreviewProvider";
+import { Link as RouterLink } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -15,7 +16,6 @@ const AlertDialog = () => {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -30,7 +30,9 @@ const AlertDialog = () => {
         <Button onClick={handleClose} color="primary" autoFocus>
           add another item
         </Button>
-        <Button onClick={handleClose}>back to items page</Button>
+        <Button onClick={handleClose} component={RouterLink} to="./items">
+          back to items page
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -10,7 +10,7 @@ class ItemsContainer extends Component {
   render() {
     return (
       <FullScreenLoader background="#212121">
-        <Query query={ALL_ITEMS_QUERY} variables={{ id: this.context.id }}>
+        <Query query={ALL_ITEMS_QUERY} variables={{ filter: this.context.id }}>
           {({ data, loading, error }) => {
             if (loading) return "Loading...";
             if (error) return `Error! ${error.message}`;

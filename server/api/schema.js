@@ -48,6 +48,7 @@ module.exports = gql`
     title: String!
     description: String!
     tags: [AssignedTag]!
+    created: Date
   }
   type Query {
     user(id: ID!): User
@@ -73,6 +74,6 @@ module.exports = gql`
     addItem(item: NewItemInput!): Item
     signup(user: SignupInput!): AuthPayload
     login(user: LoginInput!): AuthPayload
-    logout(id: ID!): User
+    logout: Boolean!
   }
 `;

@@ -8,9 +8,9 @@ const InitialState = {
   title: "",
   description: "Describe your item",
   tags: [],
-  imgUrl: "",
-  // itemowner: {},
-  create: new Date()
+  // imgUrl: "",
+  created: new Date()
+  // itemowner: {}
 };
 class ItemPreviewProvider extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class ItemPreviewProvider extends Component {
     const item = { [name]: value };
     const newItem = { ...this.state.item, ...item };
     this.setState({ item: newItem });
-    // console.log(this.state.item);
+    console.log(this.state.item);
   };
 
   resetPreveiw = () => {

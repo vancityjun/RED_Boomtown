@@ -6,18 +6,23 @@ import Avatar from "@material-ui/core/Avatar";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(3, 2)
+    padding: theme.spacing(6, 6)
   }
 }));
 
-const UserInfo = props => {
+const UserInfo = ({ user }) => {
   const classes = useStyles();
   return (
-    <Paper className={classes.root}>
-      <Avatar style={{ float: "left" }} alt="" src="" />
+    <Paper className={classes.root} style={{ marginBottom: 40 }}>
+      <div className="cf">
+        <Avatar className="avatar" alt="" src="" />
 
-      <Typography variant="h5" component="h3">
-        {props.userName}
+        <Typography variant="h3" component="h3">
+          {user[1]}
+        </Typography>
+      </div>
+      <Typography variant="h6">
+        {user[2].length} items shared 0 items borrowed
       </Typography>
       <Typography component="p">"No bio provided."</Typography>
     </Paper>

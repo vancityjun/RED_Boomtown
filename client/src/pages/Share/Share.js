@@ -1,17 +1,8 @@
 import React, { useContext, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 import styles from "./styles";
-/* 
-  TODO: Create ShareItemFrom and ShareItemPreview in the components dir
-  and call them from this file.
 
-  ShareItemForm is the form that our User will use to add a new item 
-
-  When the user is filling ShareItemForm, we will show a preview of 
-  this item using the ShareItemPreview. 
-  Hint: It should look like any other Item card.
-
-*/
 import ShareItemForm from "../../components/ShareItemForm";
 import ShareItemPreview from "../../components/ShareItemPreview";
 import AlertDialog from "../../components/AlertDialog/AlertDialog";
@@ -28,17 +19,20 @@ const Share = ({ classes }) => {
   const tags = item.tags.map(tags => {
     return tags.title;
   });
-  console.log(tags);
   return (
-    <div>
+    <div className="container">
       <ShareItemPreview
         title={item.title}
         description={item.description}
         imgUrl={item.imgUrl}
         tags={tags.join(", ")}
         userName={itemOwner[2]}
+        userId={itemOwner[0]}
+        datePosted={Date.now()}
       />
-      <ShareItemForm />
+      <div>
+        <ShareItemForm />
+      </div>
       <AlertDialog />
     </div>
   );

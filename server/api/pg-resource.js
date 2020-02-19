@@ -94,8 +94,8 @@ module.exports = postgres => {
         postgres.connect((err, client, done) => {
           try {
             client.query("BEGIN", async err => {
-              const { title, description, tags } = item;
-              const insertItem = `INSERT into items (title, description, "ownerId") values ('${title}', '${description}', ${id}) RETURNING *`;
+              const { title, description, created, tags } = item;
+              const insertItem = `INSERT into items (title, description, created, "ownerId") values ('${title}', '${description}', '${created}', ${id}) RETURNING *`;
               const newItem = await client.query(insertItem);
               const tagRelationship = {
                 text: `INSERT into itemtags ("tagId", "itemId") values ${tagsQueryString(
