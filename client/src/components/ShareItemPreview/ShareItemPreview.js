@@ -29,7 +29,6 @@ const ShareItemPreview = ({
   userId
 }) => {
   const image = imgUrl ? imgUrl : require("../../images/placeholder-img.jpg");
-  console.log(datePosted);
   const classes = useStyles();
   return (
     <Card className={classes.card}>

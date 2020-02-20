@@ -8,7 +8,7 @@ const InitialState = {
   title: "",
   description: "Describe your item",
   tags: [],
-  // imgUrl: "",
+  imgUrl: "",
   created: new Date()
   // itemowner: {}
 };

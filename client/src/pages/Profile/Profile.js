@@ -16,6 +16,7 @@ const Profile = ({ items, data }) => {
         title={info[1]}
         description={info[3]}
         imageUrl={info[2]}
+        datePosted={info[4]}
         tags={tag}
         key={i}
         userName={itemOwner[1]}

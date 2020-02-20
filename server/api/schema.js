@@ -49,6 +49,7 @@ module.exports = gql`
     description: String!
     tags: [AssignedTag]!
     created: Date
+    imgUrl: String
   }
   type Query {
     user(id: ID!): User
