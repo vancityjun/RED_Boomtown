@@ -83,7 +83,6 @@ const Header = props => {
                 return (
                   <MenuItem
                     onClick={() => {
-                      console.log("logout");
                       logoutMutation();
                     }}
                   >

@@ -26,7 +26,6 @@ class ItemPreviewProvider extends Component {
     const item = { [name]: value };
     const newItem = { ...this.state.item, ...item };
     this.setState({ item: newItem });
-    console.log(this.state.item);
   };
 
   resetPreveiw = () => {

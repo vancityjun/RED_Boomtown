@@ -13,10 +13,8 @@ class ShareContainer extends Component {
           {({ data, loading, error }) => {
             if (loading) return "Loading...";
             if (error) return `Error! ${error.message}`;
-            // console.log(data.tags);
             return (
               <TagsContext.Provider value={data.tags}>
-                {/* {this.props.children} */}
                 <Share />
               </TagsContext.Provider>
             );

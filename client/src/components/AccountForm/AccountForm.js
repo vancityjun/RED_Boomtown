@@ -25,7 +25,7 @@ class AccountForm extends Component {
     super(props);
     this.state = {
       formToggle: true,
-      errorMessage: null
+      errorMessage: null,
     };
   }
   render() {
@@ -45,15 +45,14 @@ class AccountForm extends Component {
     return (
       <Form
         onSubmit={onSubmit}
-        validate={values => validate(values)}
-        render={({ handleSubmit, values }) => (
+        validate={(values) =>validate(values) }
+        render={({ handleSubmit, values, form, pristine }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
                 <InputLabel htmlFor="fullname">Username</InputLabel>
                 <Field name="fullname" component="input" type="text">
                   {({ input, meta }) => (
-                    <>
                       <Input
                         id="fullname"
                         type="text"
@@ -63,8 +62,6 @@ class AccountForm extends Component {
                         value={input.value}
                         onChange={input.onChange}
                       />
-                      <span>{meta.error}</span>
-                    </>
                   )}
                 </Field>
               </FormControl>
@@ -114,7 +111,7 @@ class AccountForm extends Component {
                   variant="contained"
                   size="large"
                   color="secondary"
-                  disabled={false} // @TODO: This prop should depend on pristine or valid state of form
+                  disabled={pristine}
                 >
                   {this.state.formToggle ? "Enter" : "Create Account"}
                 </Button>
@@ -124,6 +121,7 @@ class AccountForm extends Component {
                     type="button"
                     onClick={() => {
                       // @TODO: Reset the form on submit
+                      // form.reset
                       this.setState({
                         formToggle: !this.state.formToggle
                       });

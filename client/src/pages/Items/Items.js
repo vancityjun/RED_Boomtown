@@ -3,8 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import ShareItemPreview from "../../components/ShareItemPreview";
 
-const Items = ({ classes, items }) => {
-  console.log(items);
+const Items = ({ items }) => {
   const itemList = items.map((item, i) => {
     const info = Object.values(item);
     const tag = Object.values(info[5][0]);
