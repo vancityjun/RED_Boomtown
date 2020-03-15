@@ -1,37 +1,38 @@
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import React, { Component } from "react";
-import Typography from "@material-ui/core/Typography";
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl'
+import Grid from '@material-ui/core/Grid'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import React, { Component } from 'react'
+import Typography from '@material-ui/core/Typography'
 
-import { Form, Field } from "react-final-form";
+import { Form, Field } from 'react-final-form'
 
 import {
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
   VIEWER_QUERY
-} from "../../apollo/queries";
-import { graphql, compose } from "react-apollo";
-import validate from "./helpers/validation";
+} from '../../apollo/queries'
+import { graphql, compose } from 'react-apollo'
+import validate from './helpers/validation'
 
-import styles from "./styles";
-import { SchemaMetaFieldDef } from "graphql";
+import styles from './styles'
+import { SchemaMetaFieldDef } from 'graphql'
 
 class AccountForm extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       formToggle: true,
-      errorMessage: null,
-    };
+      errorMessage: null
+    }
   }
   render() {
-    const { classes, login, signup } = this.props;
+    const { classes, login, signup } = this.props
 
     const onSubmit = values => {
+      console.log('submit')
       this.state.formToggle
         ? login({
             variables: { user: values }
@@ -40,12 +41,12 @@ class AccountForm extends Component {
           )
         : signup({
             variables: { user: values }
-          });
-    };
+          })
+    }
     return (
       <Form
         onSubmit={onSubmit}
-        validate={(values) =>validate(values) }
+        validate={values => validate(values)}
         render={({ handleSubmit, values, form, pristine }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
             {!this.state.formToggle && (
@@ -53,15 +54,15 @@ class AccountForm extends Component {
                 <InputLabel htmlFor="fullname">Username</InputLabel>
                 <Field name="fullname" component="input" type="text">
                   {({ input, meta }) => (
-                      <Input
-                        id="fullname"
-                        type="text"
-                        inputProps={{
-                          autoComplete: "off"
-                        }}
-                        value={input.value}
-                        onChange={input.onChange}
-                      />
+                    <Input
+                      id="fullname"
+                      type="text"
+                      inputProps={{
+                        autoComplete: 'off'
+                      }}
+                      value={input.value}
+                      onChange={input.onChange}
+                    />
                   )}
                 </Field>
               </FormControl>
@@ -74,7 +75,7 @@ class AccountForm extends Component {
                     id="email"
                     type="text"
                     inputProps={{
-                      autoComplete: "off"
+                      autoComplete: 'off'
                     }}
                     value={props.input.value}
                     onChange={props.input.onChange}
@@ -90,7 +91,7 @@ class AccountForm extends Component {
                     id="password"
                     type="password"
                     inputProps={{
-                      autoComplete: "off"
+                      autoComplete: 'off'
                     }}
                     value={props.input.value}
                     onChange={props.input.onChange}
@@ -113,7 +114,7 @@ class AccountForm extends Component {
                   color="secondary"
                   disabled={pristine}
                 >
-                  {this.state.formToggle ? "Enter" : "Create Account"}
+                  {this.state.formToggle ? 'Enter' : 'Create Account'}
                 </Button>
                 <Typography>
                   <button
@@ -124,12 +125,12 @@ class AccountForm extends Component {
                       // form.reset
                       this.setState({
                         formToggle: !this.state.formToggle
-                      });
+                      })
                     }}
                   >
                     {this.state.formToggle
-                      ? "Create an account."
-                      : "Login to existing account."}
+                      ? 'Create an account.'
+                      : 'Login to existing account.'}
                   </button>
                 </Typography>
               </Grid>
@@ -140,7 +141,7 @@ class AccountForm extends Component {
           </form>
         )}
       />
-    );
+    )
   }
 }
 
@@ -149,13 +150,13 @@ export default compose(
     options: {
       refetchQueries: [{ query: VIEWER_QUERY }]
     },
-    name: "signup"
+    name: 'signup'
   }),
   graphql(LOGIN_MUTATION, {
     options: {
       refetchQueries: [{ query: VIEWER_QUERY }]
     },
-    name: "login"
+    name: 'login'
   }),
   withStyles(styles)
-)(AccountForm);
+)(AccountForm)

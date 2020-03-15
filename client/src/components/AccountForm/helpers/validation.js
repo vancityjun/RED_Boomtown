@@ -1,13 +1,13 @@
-export default function validate(values, formToggle) {
-  const errors = {};
+export default function validate(values) {
+  const errors = {}
   if (!values.email) {
-    errors.email = "Required";
+    errors.email = 'Required'
   }
   if (!values.password) {
-    errors.password = "Required";
+    errors.password = 'Required'
   }
   if (!values.fullname) {
-    errors.fullname = "Required";
+    errors.fullname = 'Required'
   }
-  return errors;
+  return errors
 }
