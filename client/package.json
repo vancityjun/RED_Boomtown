@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Client-side code for RED Academy's Boomtown project.",
   "scripts": {
-    "build": "react-scripts build && rm -rf ../server/public && mv build ../server/public",
+    "build": "react-scripts build",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom"
