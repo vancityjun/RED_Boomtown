@@ -32,7 +32,6 @@ class AccountForm extends Component {
     const { classes, login, signup } = this.props
 
     const onSubmit = values => {
-      console.log('submit')
       this.state.formToggle
         ? login({
             variables: { user: values }
