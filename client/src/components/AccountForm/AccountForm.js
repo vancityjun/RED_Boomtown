@@ -18,7 +18,6 @@ import { graphql, compose } from 'react-apollo'
 import validate from './helpers/validation'
 
 import styles from './styles'
-import { SchemaMetaFieldDef } from 'graphql'
 
 class AccountForm extends Component {
   constructor(props) {
@@ -32,7 +31,6 @@ class AccountForm extends Component {
     const { classes, login, signup } = this.props
 
     const onSubmit = values => {
-      console.log('submit')
       this.state.formToggle
         ? login({
             variables: { user: values }

@@ -1,41 +1,37 @@
-import React, { useContext } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import FingerprintIcon from "@material-ui/icons/Fingerprint";
-import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import "./Header.scss";
-import { Link } from "react-router-dom";
-import { LOGOUT_MUTATION, VIEWER_QUERY } from "../../apollo/queries";
-import { ViewerContext } from "../../context/ViewerProvider";
-import { Mutation } from "react-apollo";
-import client from "../../apollo";
+import React from 'react'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import FingerprintIcon from '@material-ui/icons/Fingerprint'
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+import Button from '@material-ui/core/Button'
+import './Header.scss'
+import { Link } from 'react-router-dom'
+import { LOGOUT_MUTATION } from '../../apollo/queries'
+import { Mutation } from 'react-apollo'
+import client from '../../apollo'
 
 const Header = props => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const viewerContext = useContext(ViewerContext);
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const open = Boolean(anchorEl)
 
   const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
   return (
     <AppBar position="static">
       <Toolbar className="toolBar">
         <Link to="/">
           <img
-            src={require("../../images/boomtown.svg")}
+            src={require('../../images/boomtown.svg')}
             alt=""
             style={{ width: 40 }}
           />
@@ -76,27 +72,27 @@ const Header = props => {
             <Mutation
               mutation={LOGOUT_MUTATION}
               onCompleted={() => {
-                client.resetStore();
+                client.resetStore()
               }}
             >
               {(logoutMutation, { data }) => {
                 return (
                   <MenuItem
                     onClick={() => {
-                      logoutMutation();
+                      logoutMutation()
                     }}
                   >
                     <PowerSettingsNewIcon />
                     log out
                   </MenuItem>
-                );
+                )
               }}
             </Mutation>
           </Menu>
         </div>
       </Toolbar>
     </AppBar>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

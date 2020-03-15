@@ -1,29 +1,28 @@
-import React, { useContext } from "react";
-import { ItemPreviewContext } from "../../context/ItemPreviewProvider";
-import { TagsContext } from "../../pages/Share/ShareContainer";
-import "./Style.scss";
-import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import ListItemText from "@material-ui/core/ListItemText";
-import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
-import Typography from "@material-ui/core/Typography";
+import React, { useContext } from 'react'
+import { ItemPreviewContext } from '../../context/ItemPreviewProvider'
+import { TagsContext } from '../../pages/Share/ShareContainer'
+import './Style.scss'
+import Button from '@material-ui/core/Button'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import ListItemText from '@material-ui/core/ListItemText'
+import Select from '@material-ui/core/Select'
+import Checkbox from '@material-ui/core/Checkbox'
+import Typography from '@material-ui/core/Typography'
 
 const ShareForm = () => {
-  const itemPreviewContext = useContext(ItemPreviewContext);
-  const tagsContext = useContext(TagsContext);
-  const { updatePreview, insertItem } = itemPreviewContext;
-  const { tags } = itemPreviewContext.state.item;
+  const itemPreviewContext = useContext(ItemPreviewContext)
+  const tagsContext = useContext(TagsContext)
+  const { updatePreview, insertItem } = itemPreviewContext
+  const { tags } = itemPreviewContext.state.item
   const flexColumn = {
-    display: "flex",
-    flexDirection: "column",
-    width: "420px",
-    float: "left"
-  };
+    display: 'flex',
+    flexDirection: 'column',
+    width: '420px',
+    float: 'left'
+  }
   return (
     <form method="post" onSubmit={insertItem} style={flexColumn}>
       <Typography variant="h3">Share. Borrow. Prosper.</Typography>
@@ -32,7 +31,7 @@ const ShareForm = () => {
         accept="image/*"
         id="contained-button-file"
         type="file"
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         onChange={updatePreview}
       />
       <label htmlFor="contained-button-file">
@@ -64,21 +63,21 @@ const ShareForm = () => {
           input={<Input />}
           renderValue={selected => {
             const tag = selected.map(tags => {
-              return tags.title;
-            });
-            return tag.join(", ");
+              return tags.title
+            })
+            return tag.join(', ')
           }}
           // MenuProps={MenuProps}
         >
           {tagsContext.map(tags => {
-            delete tags.__typename;
-            const title = tags.title;
+            delete tags.__typename
+            const title = tags.title
             return (
               <MenuItem key={title} value={tags}>
                 <Checkbox checked={tagsContext.indexOf(title) > -1} />
                 <ListItemText primary={title} />
               </MenuItem>
-            );
+            )
           })}
         </Select>
       </FormControl>
@@ -91,7 +90,7 @@ const ShareForm = () => {
         Share
       </Button>
     </form>
-  );
-};
+  )
+}
 
-export default ShareForm;
+export default ShareForm
