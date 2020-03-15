@@ -46,8 +46,8 @@ class AccountForm extends Component {
     return (
       <Form
         onSubmit={onSubmit}
-        validate={values => validate(values)}
-        render={({ handleSubmit, values, form, pristine }) => (
+        validate={values => validate(values, this.state.formToggle)}
+        render={({ handleSubmit, values, reset, hasValidationErrors }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
@@ -112,7 +112,7 @@ class AccountForm extends Component {
                   variant="contained"
                   size="large"
                   color="secondary"
-                  disabled={pristine}
+                  disabled={hasValidationErrors}
                 >
                   {this.state.formToggle ? 'Enter' : 'Create Account'}
                 </Button>
@@ -122,7 +122,6 @@ class AccountForm extends Component {
                     type="button"
                     onClick={() => {
                       // @TODO: Reset the form on submit
-                      // form.reset
                       this.setState({
                         formToggle: !this.state.formToggle
                       })
