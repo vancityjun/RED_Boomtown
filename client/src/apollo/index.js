@@ -9,7 +9,7 @@ const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV !== 'production'
       ? 'http://localhost:8080/graphql'
-      : '/graphql',
+      : 'https://jun-boomtown-server.herokuapp.com/graphql',
   credentials: process.env.NODE_ENV === 'production' ? 'same-origin' : 'include'
 })
 
